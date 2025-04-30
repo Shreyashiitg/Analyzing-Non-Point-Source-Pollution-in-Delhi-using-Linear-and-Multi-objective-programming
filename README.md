@@ -1,4 +1,4 @@
-# Analyzing-Non-Point-Source-Pollution-in-Delhi-using-Linear-and-Multi-objective-programming
+# Analyzing Non Point Source Pollution in Delhi using Linear and Multi objective programming
 -->Developed a land-use optimization model to reduce NPS pollution.  
 -->Employed empirical models to estimate TN and TP loads.  
 -->Offered decision-makers alternatives for land-use adjustments.  
