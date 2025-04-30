@@ -1,0 +1,329 @@
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  Sets
+   2      i Land-use types / AL, FL, GL, WR, CL /;
+   3   
+   4  Parameters
+   5      ECn(i) Export Coefficients for TN(t per km²·yr) / AL 2.90, FL 0.30, GL 1.00, WR 1.50, CL 1.10 /
+   6      ECp(i) Export Coefficients for TP(t per km²·yr) / AL 0.90, FL 0.15, GL 0.17, WR 0.04, CL 0.50 /
+   7      BT(i)  Economic Benefits (10^6 yuan perkm²) / AL 6.77, FL 2.64, GL 0.12, WR 5.19, CL 62.76 /
+   8      LB(i)  Lower Bounds (km²)  / AL 400, FL 1353, GL 0, WR 96.16, CL 800 /
+   9      UB(i)  Upper Bounds (km²)  / AL 505.28, FL 5093.44, GL 10, WR 120, CL 1000 /;
+  10  Scalar
+  11      TA  Total area (km²)/6765/
+  12      SDN TN reduction(t per yr) /4142.28/
+  13      SDP TP reduction(t per yr) /1679.3/
+  14      alpha /100000/;
+  15   
+  16  Variables
+  17      X(i)   "Area of each land-use type (km²)"
+  18      Z      "Total economic benefit (yuan)";
+  19   
+  20  Positive Variables X;
+  21  Positive Variable SlackLB(i), SlackUB(i);
+  22   
+  23  Equations
+  24      Obj    "Objective function"
+  25      TN_Cons "TN constraint"
+  26      TP_Cons "TP constraint"
+  27      Area_Cons "Total area constraint"
+  28      BoundsSlack1(i) "Lower bounds for land use types"
+  29      BoundsSlack2(i) "Upper bounds for land use types";
+  30   
+  31  Obj ..        Z =e= sum(i, BT(i) * X(i))-alpha*(sum(i,SlackLB(i)+SlackUB(i)));
+  32  TN_Cons ..    sum(i, ECn(i) * X(i)) =l= SDN;
+  33  TP_Cons ..    sum(i, ECp(i) * X(i)) =l= SDP;
+  34  Area_Cons ..  sum(i, X(i)) =l= TA;
+  35  BoundsSlack1(i) .. (LB(i) - SlackLB(i)) =l= X(i);
+  36  BoundsSlack2(i).. X(i) =l=( UB(i) + SlackUB(i));
+  37   
+  38  Model LandUseOptimization /all/;
+  39  Solve LandUseOptimization using LP maximizing Z;
+  40   
+  41  Display X.l, Z.l;
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  47.6.0 c2de9d6d WEX-WEI
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE LandUseOptimization Using LP From line 39
+
+
+---- Obj  =E=  Objective function
+
+Obj..  - 6.77*X(AL) - 2.64*X(FL) - 0.12*X(GL) - 5.19*X(WR) - 62.76*X(CL) + Z + 100000*SlackLB(AL) + 100000*SlackLB(FL) + 100000*SlackLB(GL) + 100000*SlackLB(WR) + 100000*SlackLB(CL) + 100000*SlackUB(AL) + 100000*SlackUB(FL) + 100000*SlackUB(GL) + 100000*SlackUB(WR) + 100000*SlackUB(CL) =E= 0 ; (LHS = 0)
+     
+
+---- TN_Cons  =L=  TN constraint
+
+TN_Cons..  2.9*X(AL) + 0.3*X(FL) + X(GL) + 1.5*X(WR) + 1.1*X(CL) =L= 4142.28 ; (LHS = 0)
+     
+
+---- TP_Cons  =L=  TP constraint
+
+TP_Cons..  0.9*X(AL) + 0.15*X(FL) + 0.17*X(GL) + 0.04*X(WR) + 0.5*X(CL) =L= 1679.3 ; (LHS = 0)
+     
+
+---- Area_Cons  =L=  Total area constraint
+
+Area_Cons..  X(AL) + X(FL) + X(GL) + X(WR) + X(CL) =L= 6765 ; (LHS = 0)
+     
+
+---- BoundsSlack1  =L=  Lower bounds for land use types
+
+BoundsSlack1(AL)..  - X(AL) - SlackLB(AL) =L= -400 ; (LHS = 0, INFES = 400 ****)
+     
+BoundsSlack1(FL)..  - X(FL) - SlackLB(FL) =L= -1353 ; (LHS = 0, INFES = 1353 ****)
+     
+BoundsSlack1(GL)..  - X(GL) - SlackLB(GL) =L= 0 ; (LHS = 0)
+     
+REMAINING 2 ENTRIES SKIPPED
+
+
+---- BoundsSlack2  =L=  Upper bounds for land use types
+
+BoundsSlack2(AL)..  X(AL) - SlackUB(AL) =L= 505.28 ; (LHS = 0)
+     
+BoundsSlack2(FL)..  X(FL) - SlackUB(FL) =L= 5093.44 ; (LHS = 0)
+     
+BoundsSlack2(GL)..  X(GL) - SlackUB(GL) =L= 10 ; (LHS = 0)
+     
+REMAINING 2 ENTRIES SKIPPED
+
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE LandUseOptimization Using LP From line 39
+
+
+---- X  Area of each land-use type (km²)
+
+X(AL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -6.77    Obj
+        2.9     TN_Cons
+        0.9     TP_Cons
+        1       Area_Cons
+       -1       BoundsSlack1(AL)
+        1       BoundsSlack2(AL)
+
+X(FL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -2.64    Obj
+        0.3     TN_Cons
+        0.15    TP_Cons
+        1       Area_Cons
+       -1       BoundsSlack1(FL)
+        1       BoundsSlack2(FL)
+
+X(GL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+       -0.12    Obj
+        1       TN_Cons
+        0.17    TP_Cons
+        1       Area_Cons
+       -1       BoundsSlack1(GL)
+        1       BoundsSlack2(GL)
+
+REMAINING 2 ENTRIES SKIPPED
+
+---- Z  Total economic benefit (yuan)
+
+Z
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       Obj
+
+
+---- SlackLB  
+
+SlackLB(AL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack1(AL)
+
+SlackLB(FL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack1(FL)
+
+SlackLB(GL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack1(GL)
+
+REMAINING 2 ENTRIES SKIPPED
+
+---- SlackUB  
+
+SlackUB(AL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack2(AL)
+
+SlackUB(FL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack2(FL)
+
+SlackUB(GL)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+   100000       Obj
+       -1       BoundsSlack2(GL)
+
+REMAINING 2 ENTRIES SKIPPED
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE LandUseOptimization Using LP From line 39
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 1.000E+01, 6.765E+03] - Zero values observed as well
+Bound     [min, max] : [        NA,        NA] - Zero values observed as well
+Matrix    [min, max] : [ 4.000E-02, 1.000E+05]
+
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE LandUseOptimization Using LP From line 39
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           6     SINGLE EQUATIONS           14
+BLOCKS OF VARIABLES           4     SINGLE VARIABLES           16
+NON ZERO ELEMENTS            51
+
+
+GENERATION TIME      =        0.015 SECONDS      4 MB  47.6.0 c2de9d6d WEX-WEI
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE LandUseOptimization Using LP From line 39
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   LandUseOptimization   OBJECTIVE  Z
+     TYPE    LP                    DIRECTION  MAXIMIZE
+     SOLVER  CPLEX                 FROM LINE  39
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      1 Optimal
+**** OBJECTIVE VALUE            79917.2335
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         6    2147483647
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.03 ticks)
+
+
+Optimal solution found
+Objective:        79917.233467
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU Obj                 .              .              .             1.0000      
+---- EQU TN_Cons           -INF         4130.7027      4142.2800          .          
+---- EQU TP_Cons           -INF         1679.3000      1679.3000         7.5222      
+---- EQU Area_Cons         -INF         6669.5333      6765.0000          .          
+
+  Obj  Objective function
+  TN_Cons  TN constraint
+  TP_Cons  TP constraint
+  Area_Cons  Total area constraint
+
+---- EQU BoundsSlack1  Lower bounds for land use types
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+AL        -INF         -456.0933      -400.0000          .          
+FL        -INF        -5093.4400     -1353.0000          .          
+GL        -INF             .              .              .          
+WR        -INF         -120.0000       -96.1600          .          
+CL        -INF        -1000.0000      -800.0000          .          
+
+---- EQU BoundsSlack2  Upper bounds for land use types
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+AL        -INF          456.0933       505.2800          .          
+FL        -INF         5093.4400      5093.4400         1.5117      
+GL        -INF             .            10.0000          .          
+WR        -INF          120.0000       120.0000         4.8891      
+CL        -INF         1000.0000      1000.0000        58.9989      
+
+---- VAR X  Area of each land-use type (km²)
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+AL          .           456.0933        +INF             .          
+FL          .          5093.4400        +INF             .          
+GL          .              .            +INF           -1.1588      
+WR          .           120.0000        +INF             .          
+CL          .          1000.0000        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR Z                 -INF        79917.2335        +INF             .          
+
+  Z  Total economic benefit (yuan)
+
+---- VAR SlackLB  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+AL          .              .            +INF      -100000.0000      
+FL          .              .            +INF      -100000.0000      
+GL          .              .            +INF      -100000.0000      
+WR          .              .            +INF      -100000.0000      
+CL          .              .            +INF      -100000.0000      
+
+---- VAR SlackUB  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+AL          .              .            +INF      -100000.0000      
+FL          .              .            +INF       -99998.4883      
+GL          .              .            +INF      -100000.0000      
+WR          .              .            +INF       -99995.1109      
+CL          .              .            +INF       -99941.0011      
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS 47.6.0  c2de9d6d Sep 12, 2024          WEX-WEI x86 64bit/MS Windows - 11/28/24 11:01:41 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     41 VARIABLE X.L  Area of each land-use type (km²)
+
+AL  456.093,    FL 5093.440,    WR  120.000,    CL 1000.000
+
+
+----     41 VARIABLE Z.L                   =    79917.233  Total economic benefit (yuan)
+
+
+EXECUTION TIME       =        0.046 SECONDS      4 MB  47.6.0 c2de9d6d WEX-WEI
+
+
+USER: Course License                                 S240930|0002AO-GEN
+      Indian Institute of Technology Guwahati, Chemical EngineerDCE3775
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      D:\Downloads\IIT ECE studies\5th sem\Computer aided applied optimization (CL 643)\Project\GAMS\Delhi\NonSourcePoll_Delhi.gms
+Output     D:\Downloads\IIT ECE studies\5th sem\Computer aided applied optimization (CL 643)\Project\GAMS\Delhi\NonSourcePoll_Delhi.lst

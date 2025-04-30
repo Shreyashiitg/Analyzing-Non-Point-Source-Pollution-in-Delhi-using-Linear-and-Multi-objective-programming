@@ -1,0 +1,74 @@
+
+--- Job NonSourcePoll_Delhi.gms Start 11/28/24 11:01:03 47.6.0 c2de9d6d WEX-WEI x86 64bit/MS Windows
+--- Applying:
+    C:\GAMS\47\gmsprmNT.txt
+--- GAMS Parameters defined
+    Input "D:\Downloads\IIT ECE studies\5th sem\Computer aided applied optimization (CL 643)\Project\GAMS\Delhi\NonSourcePoll_Delhi.gms"
+    PageSize 0
+    ScrDir "D:\Downloads\IIT ECE studies\5th sem\Computer aided applied optimization (CL 643)\Project\GAMS\Delhi\225a\"
+    SysDir C:\GAMS\47\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+Licensee: Course License                                 S240930|0002AO-GEN
+          Indian Institute of Technology Guwahati, Chemical EngineerDCE3775
+          C:\Users\Shreyash Bharati\OneDrive\Dokumen\GAMS\gamslice.txt
+          License Admin: Prakash Kotecha, pkotecha@iitg.ac.in              
+          Course license for use within the course and related course work
+          The evaluation period of the license will expire on Dec 29, 2024
+Processor information: 1 socket(s), 8 core(s), and 16 thread(s) available
+GAMS 47.6.0   Copyright (C) 1987-2024 GAMS Development. All rights reserved
+--- Starting compilation
+--- NonSourcePoll_Delhi.gms(41) 3 Mb
+--- Starting execution: elapsed 0:00:00.004
+--- Generating LP model LandUseOptimization
+--- NonSourcePoll_Delhi.gms(39) 4 Mb
+---   14 rows  16 columns  51 non-zeroes
+--- Range statistics (absolute non-zero finite values)
+--- RHS       [min, max] : [ 1.000E+01, 6.765E+03] - Zero values observed as well
+--- Bound     [min, max] : [        NA,        NA] - Zero values observed as well
+--- Matrix    [min, max] : [ 4.000E-02, 1.000E+04]
+--- Executing CPLEX (Solvelink=2): elapsed 0:00:00.007
+
+IBM ILOG CPLEX   47.6.0 c2de9d6d Sep 12, 2024          WEI x86 64bit/MS Window
+
+*** This solver runs with a community license.
+--- GMO setup time: 0.00s
+--- GMO memory 0.50 Mb (peak 0.50 Mb)
+--- Dictionary memory 0.00 Mb
+--- Cplex 22.1.1.0 link memory 0.00 Mb (peak 0.00 Mb)
+--- Starting Cplex
+
+Version identifier: 22.1.1.0 | 2022-11-27 | 9160aff4d
+CPXPARAM_Advance                                 0
+CPXPARAM_Simplex_Display                         2
+CPXPARAM_MIP_Display                             4
+CPXPARAM_MIP_Pool_Capacity                       0
+CPXPARAM_MIP_Tolerances_AbsMIPGap                0
+Tried aggregator 1 time.
+LP Presolve eliminated 1 rows and 2 columns.
+Reduced LP has 12 rows, 14 columns, and 33 nonzeros.
+Presolve time = 0.00 sec. (0.01 ticks)
+
+Iteration      Dual Objective            In Variable           Out Variable
+     1 sI            0.000000                  X(CL)        Area_Cons slack
+     2          101789.050000                  X(AL) BoundsSlack2(CL) slack
+     3           86354.458857                  X(WR)          TN_Cons slack
+     4           80142.162077                  X(FL) BoundsSlack2(WR) slack
+     5           79944.260552        Area_Cons slack BoundsSlack2(FL) slack
+     6           79917.233467          TN_Cons slack          TP_Cons slack
+
+--- LP status (1): optimal.
+--- Cplex Time: 0.00sec (det. 0.03 ticks)
+
+
+Optimal solution found
+Objective:        79917.233467
+
+--- Reading solution for model LandUseOptimization
+--- Executing after solve: elapsed 0:00:00.046
+--- NonSourcePoll_Delhi.gms(41) 4 Mb
+*** Status: Normal completion
+--- Job NonSourcePoll_Delhi.gms Stop 11/28/24 11:01:03 elapsed 0:00:00.046

@@ -1,0 +1,29 @@
+B 3 C o m p i l a t i o n
+B 52 Equation Listing    SOLVE LandUseOptimization Using LP From line 39
+D 55 Obj
+D 60 TN_Cons
+D 65 TP_Cons
+D 70 Area_Cons
+D 75 BoundsSlack1
+D 86 BoundsSlack2
+B 98 Column Listing      SOLVE LandUseOptimization Using LP From line 39
+E 101 X
+E 132 Z
+E 139 SlackLB
+E 158 SlackUB
+B 178 Range Statistics    SOLVE LandUseOptimization Using LP From line 39
+B 189 Model Statistics    SOLVE LandUseOptimization Using LP From line 39
+B 202 Solution Report     SOLVE LandUseOptimization Using LP From line 39
+F 235 Obj
+F 236 TN_Cons
+F 237 TP_Cons
+F 238 Area_Cons
+F 245 BoundsSlack1
+F 255 BoundsSlack2
+G 265 X
+G 277 Z
+G 281 SlackLB
+G 291 SlackUB
+B 307 E x e c u t i o n
+I 307 X
+I 314 Z
